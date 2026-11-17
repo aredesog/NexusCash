@@ -34,17 +34,7 @@ Abra **http://localhost:8000**. Abrir o `index.html` direto (file://) não funci
 
 A documentação automática da API fica em http://localhost:8000/docs.
 
-## Rotas do backend
 
-| Rota | O que faz | Cache |
-|---|---|---|
-| `GET /api/config` | Lista de moedas e intervalo de atualização | - |
-| `GET /api/markets?vs=brl` | Preço, variação, market cap e mini-gráfico de todas as moedas | 55s |
-| `GET /api/chart/{id}?vs=brl&days=7` | Série de preços (gráfico de linha) | 55s |
-| `GET /api/ohlc/{id}?vs=brl&days=7` | Velas OHLC | 55s |
-| `GET /api/projection/{id}?vs=brl&amount=1000&monthly=100&months=12` | Raio-X + simulação de cenários | histórico: 1h |
-
-A chave fica só no servidor e é enviada à CoinGecko no header `x-cg-demo-api-key`. O cache faz várias abas abertas dividirem a mesma consulta, o que economiza os 10 mil créditos/mês do plano Demo. Se a CoinGecko falhar ou bater o limite, o backend devolve o último dado bom.
 
 ## Como funciona a Perspectiva
 
@@ -62,14 +52,9 @@ Raio-X do último ano: retorno, volatilidade anualizada, queda máxima (*max dra
 
 > **Limitações:** o modelo só "conhece" um ano de comportamento. Crises maiores do que as desse período não aparecem na simulação. Isto é um exercício de estatística e de gestão de risco, **não é previsão nem recomendação de investimento**.
 
-## Segurança
-
-- `backend/.env` (com a chave) está no `.gitignore`. No GitHub vai só o `.env.example`.
-- O navegador nunca recebe a chave: ele só fala com `/api/*`.
 
 ## Ideias de evolução
 
 - Taxa livre de risco real (CDI/Selic) no Sharpe, via API do Banco Central.
 - Comparar a cripto com o CDI e o Ibovespa no mesmo período.
 - Simulação de carteira com várias moedas e rebalanceamento.
-- Deploy (Render/Railway) com a chave como variável de ambiente.

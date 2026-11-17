@@ -30,7 +30,9 @@
     chart: null,
     left: REFRESH,
     busy: false,
-    lastPrice: {}
+    lastPrice: {},
+    lastRefresh: 0,
+    lastStatus: ""
   };
 
   // ---------- API (backend) ----------
@@ -367,7 +369,9 @@
       renderList();
       renderHead();
       await loadChart();
-      setStatus(`atualizado às ${new Date().toLocaleTimeString("pt-BR")} · próximo em ${REFRESH}s`);
+      state.lastRefresh = Date.now();
+      state.lastStatus = `atualizado às ${new Date().toLocaleTimeString("pt-BR")} · próximo em ${REFRESH}s`;
+      setStatus(state.lastStatus);
     } catch (e) {
       console.error(e);
       setStatus(e.message, true);
@@ -631,8 +635,19 @@
     if (!COINS.includes(state.sel)) state.sel = COINS[0];
     state.left = REFRESH;
 
+    // Economia de API: com a aba escondida/minimizada, o app não atualiza.
+    // Ao voltar, atualiza na hora se o último dado já tiver passado do intervalo.
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        setStatus("pausado: aba em segundo plano (economizando a API)");
+        return;
+      }
+      if (Date.now() - state.lastRefresh >= REFRESH * 1000) refresh();
+      else if (state.lastStatus) setStatus(state.lastStatus);
+    });
+
     setInterval(() => {
-      if (state.busy) return;
+      if (state.busy || document.hidden) return;
       state.left = Math.max(0, state.left - 1);
       updateRing();
       if (state.left === 0) refresh();
