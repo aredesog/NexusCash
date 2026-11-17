@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXUSCASH · Cripto em tempo real</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ===== TOPO ===== -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M16 2 30 16 16 30 2 16Z" /><path d="M16 9 23 16 16 23 9 16Z" /></svg>
+      </div>
+      <span class="brand-name">NEXUS<span>CASH</span></span>
+    </div>
+
+
+    <div class="controls">
+      <div class="seg" id="curSeg">
+        <button data-cur="brl">BRL</button>
+        <button data-cur="usd">USD</button>
+      </div>
+      <button class="refresh" id="refreshBtn" title="Atualizar agora">
+        <svg viewBox="0 0 36 36" class="ring">
+          <circle cx="18" cy="18" r="15" class="ring-bg" />
+          <circle cx="18" cy="18" r="15" class="ring-fg" id="ringFg" />
+        </svg>
+        <span class="mono" id="countdown">60</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== CONTEÚDO ===== -->
+  <main class="layout">
+    <!-- Lista de moedas -->
+    <aside class="panel coins">
+      <div class="label mono"><span class="num">01</span> — // MOEDAS</div>
+      <div class="search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+        <input id="search" type="text" placeholder="buscar moeda..." autocomplete="off" />
+      </div>
+      <ul id="coinList" class="coin-list">
+        <li class="skeleton"></li><li class="skeleton"></li><li class="skeleton"></li>
+        <li class="skeleton"></li><li class="skeleton"></li><li class="skeleton"></li>
+      </ul>
+    </aside>
+
+    <!-- Detalhe da moeda -->
+    <section class="panel detail">
+      <div class="label mono"><span class="num">02</span> — // VARIAÇÃO</div>
+
+      <div class="coin-head">
+        <div class="coin-id">
+          <img id="coinImg" alt="" />
+          <div>
+            <h1 id="coinName">—</h1>
+            <div class="coin-meta mono"><span id="coinSymbol">—</span><span class="rank" id="coinRank">#—</span></div>
+          </div>
+        </div>
+        <div class="coin-price">
+          <div class="price" id="coinPrice">—</div>
+          <div class="pill" id="coinChange">24h —</div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="seg" id="daysSeg">
+          <button data-days="1">1D</button>
+          <button data-days="7">7D</button>
+          <button data-days="14">14D</button>
+          <button data-days="30">30D</button>
+          <button data-days="90">90D</button>
+        </div>
+        <div class="seg" id="modeSeg">
+          <button data-mode="line">Linha</button>
+          <button data-mode="candle">Velas</button>
+        </div>
+        <div class="legend mono">
+          <span><i class="dot up"></i>alta</span>
+          <span><i class="dot down"></i>baixa</span>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <canvas id="chart"></canvas>
+        <div class="chart-msg mono" id="chartMsg">carregando dados...</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="mono">MÁXIMA NO PERÍODO</span><strong id="stHigh">—</strong></div>
+        <div class="stat"><span class="mono">MÍNIMA NO PERÍODO</span><strong id="stLow">—</strong></div>
+        <div class="stat"><span class="mono">VARIAÇÃO NO PERÍODO</span><strong id="stVar">—</strong></div>
+        <div class="stat"><span class="mono">ALTAS × BAIXAS</span><strong id="stUpDown">—</strong></div>
+        <div class="stat"><span class="mono">MARKET CAP</span><strong id="stCap">—</strong></div>
+        <div class="stat"><span class="mono">VOLUME 24H</span><strong id="stVol">—</strong></div>
+      </div>
+    </section>
+
+    <!-- Perspectiva (simulação) -->
+    <section class="panel projection">
+      <div class="label mono"><span class="num">03</span> — // PERSPECTIVA <span class="tag">simulação, não previsão</span></div>
+
+      <div class="pj-grid">
+        <div class="pj-form">
+          <h2>E se eu investir em <span id="pjCoin">—</span>?</h2>
+
+          <label class="field">
+            <span class="mono">VALOR INICIAL</span>
+            <div class="input-money"><span class="cur-sym">R$</span><input id="pjAmount" type="number" min="1" step="50" value="1000" /></div>
+          </label>
+
+          <label class="field">
+            <span class="mono">APORTE MENSAL</span>
+            <div class="input-money"><span class="cur-sym">R$</span><input id="pjMonthly" type="number" min="0" step="50" value="0" /></div>
+          </label>
+
+          <div class="field">
+            <span class="mono">HORIZONTE</span>
+            <div class="seg" id="pjMonths">
+              <button data-months="3">3M</button>
+              <button data-months="6">6M</button>
+              <button data-months="12">1A</button>
+              <button data-months="24">2A</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="mono">CENÁRIO</span>
+            <div class="seg" id="pjScenario">
+              <button data-sc="historico">Histórico</button>
+              <button data-sc="neutro">Neutro</button>
+            </div>
+            <p class="hint" id="pjHint"></p>
+          </div>
+        </div>
+
+        <div class="pj-main">
+          <div class="chart-wrap pj-chart">
+            <canvas id="pjChart"></canvas>
+            <div class="chart-msg mono" id="pjMsg">simulando cenários...</div>
+          </div>
+          <div class="pj-legend mono">
+            <span><i class="band wide"></i>90% dos cenários</span>
+            <span><i class="band mid"></i>50% dos cenários</span>
+            <span><i class="line-med"></i>mediana</span>
+            <span><i class="line-inv"></i>total investido</span>
+          </div>
+          <p class="pj-warning mono" id="pjWarning"></p>
+        </div>
+      </div>
+
+      <div class="stats pj-results">
+        <div class="stat"><span class="mono">TOTAL INVESTIDO</span><strong id="pjInvested">—</strong></div>
+        <div class="stat"><span class="mono">CENÁRIO MEDIANO</span><strong id="pjP50">—</strong></div>
+        <div class="stat"><span class="mono">PESSIMISTA (5%)</span><strong id="pjP5">—</strong></div>
+        <div class="stat"><span class="mono">OTIMISTA (95%)</span><strong id="pjP95">—</strong></div>
+        <div class="stat"><span class="mono">CHANCE DE PREJUÍZO</span><strong id="pjLoss">—</strong></div>
+        <div class="stat"><span class="mono">CHANCE DE DOBRAR</span><strong id="pjDouble">—</strong></div>
+      </div>
+
+      <div class="label mono sub-label">// RAIO-X DO ÚLTIMO ANO</div>
+      <div class="stats metrics">
+        <div class="stat"><span class="mono">RETORNO 12 MESES</span><strong id="mRet">—</strong></div>
+        <div class="stat"><span class="mono">VOLATILIDADE ANUAL</span><strong id="mVol">—</strong></div>
+        <div class="stat"><span class="mono">QUEDA MÁXIMA</span><strong id="mDD">—</strong></div>
+        <div class="stat"><span class="mono">SHARPE</span><strong id="mSharpe">—</strong></div>
+        <div class="stat"><span class="mono">VOLATILIDADE 90 DIAS</span><strong id="mVol90">—</strong></div>
+        <div class="stat"><span class="mono">RETORNO 30 DIAS</span><strong id="mRet30">—</strong></div>
+      </div>
+
+      <p class="disclaimer">
+        Os cenários são gerados reamostrando os retornos diários reais do último ano (3.000 simulações, em blocos de 7 dias).
+        Mostram a faixa do que <em>poderia</em> acontecer se o comportamento recente se repetir. Isso não é previsão nem recomendação
+        de investimento. Cripto pode cair muito mais do que o histórico de um ano mostra.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="status mono">
+      <span><i class="live"></i><span id="statusText">conectando...</span></span>
+      <span>dados: <a href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a></span>
+    </div>
+    <div class="devs">
+      <span class="devs-label mono">// DESENVOLVIDO POR</span>
+      <a class="dev" href="https://www.linkedin.com/in/guilhermearedesg/" target="_blank" rel="noopener" title="LinkedIn de Guilherme Aredes">
+        <img src="assets/guilherme.jpg" alt="Foto de Guilherme Aredes" />
+        <span class="dev-name">Guilherme Aredes</span>
+        <span class="li-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></span>
+      </a>
+      <a class="dev" href="https://www.linkedin.com/in/pedroferreirap-/" target="_blank" rel="noopener" title="LinkedIn de Pedro Ferreira">
+        <img src="assets/pedro.jpg" alt="Foto de Pedro Ferreira" />
+        <span class="dev-name">Pedro Ferreira</span>
+        <span class="li-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></span>
+      </a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

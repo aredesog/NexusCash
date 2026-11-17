@@ -1,0 +1,16 @@
+[project]
+name = "nexuscash"
+version = "1.0.0"
+description = "Painel de criptomoedas com simulação de cenários (FastAPI + Chart.js)"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+    "httpx>=0.27",
+    "numpy>=1.26",
+    "python-dotenv>=1.0",
+]
+
+# Vercel: o app FastAPI fica em backend/main.py
+[tool.vercel]
+entrypoint = "backend.main:app"
