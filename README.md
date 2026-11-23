@@ -50,7 +50,7 @@ Há dois cenários:
 
 Raio-X do último ano: retorno, volatilidade anualizada, queda máxima (*max drawdown*), índice de Sharpe (com taxa livre de risco = 0), volatilidade dos últimos 90 dias e retorno de 30 dias.
 
-> **Limitações:** o modelo só "conhece" um ano de comportamento. Crises maiores do que as desse período não aparecem na simulação. Isto é um exercício de estatística e de gestão de risco, **não é previsão nem recomendação de investimento**.
+> **Limitações:** o modelo só "conhece" um ano de comportamento. Crises maiores do que as desse período não aparecem na simulação. Isto é um exercício de estatística e de gestão de risco, **não é previsão nem recomendação de investimento!!**.
 
 
 ## Ideias de evolução
