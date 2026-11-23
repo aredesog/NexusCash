@@ -4,14 +4,14 @@ Painel de criptomoedas com cotações atualizadas a cada minuto, gráfico de alt
 
 ```
 Cripto/
-├── backend/              -> FastAPI (Python): esconde a chave, faz cache e roda a simulação
-│   ├── main.py           -> rotas /api/* e serve o frontend
-│   ├── coingecko.py      -> cliente da CoinGecko (chave + cache)
-│   ├── analysis.py       -> métricas de risco + Monte Carlo
+├── backend/              
+│   ├── main.py           
+│   ├── coingecko.py      
+│   ├── analysis.py      
 │   ├── requirements.txt
-│   ├── .env.example      -> modelo (vai pro GitHub)
-│   └── .env              -> sua chave (NÃO vai pro GitHub)
-├── frontend/             -> HTML + CSS + JS puro (Chart.js)
+│   ├── .env.example      
+│   └── .env             
+├── frontend/            
 └── .gitignore
 ```
 
