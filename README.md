@@ -2,40 +2,6 @@
 
 Painel de criptomoedas com cotações atualizadas a cada minuto, gráfico de altas (verde) e baixas (vermelho) e uma seção de **Perspectiva** que simula cenários de investimento com base no histórico real da moeda. A paleta é a da LACEN / AWS Builders UNIFAL.
 
-```
-Cripto/
-├── backend/              
-│   ├── main.py           
-│   ├── coingecko.py      
-│   ├── analysis.py      
-│   ├── requirements.txt
-│   ├── .env.example      
-│   └── .env             
-├── frontend/            
-└── .gitignore
-```
-
-## Como rodar
-
-```bash
-cd backend
-python -m venv .venv
-# Windows:
-.venv\Scripts\activate
-# Linux/Mac:
-source .venv/bin/activate
-
-pip install -r requirements.txt
-copy .env.example .env        # (Linux/Mac: cp) e coloque sua chave no .env
-uvicorn main:app --reload
-```
-
-Abra **http://localhost:8000**. Abrir o `index.html` direto (file://) não funciona mais, porque o front agora conversa com o backend.
-
-A documentação automática da API fica em http://localhost:8000/docs.
-
-
-
 ## Como funciona a Perspectiva
 
 1. O backend baixa **1 ano de preços diários** da moeda.
@@ -58,3 +24,25 @@ Raio-X do último ano: retorno, volatilidade anualizada, queda máxima (*max dra
 - Taxa livre de risco real (CDI/Selic) no Sharpe, via API do Banco Central.
 - Comparar a cripto com o CDI e o Ibovespa no mesmo período.
 - Simulação de carteira com várias moedas e rebalanceamento.
+
+
+## Como rodar
+
+```bash
+cd backend
+python -m venv .venv
+# Windows:
+.venv\Scripts\activate
+# Linux/Mac:
+source .venv/bin/activate
+
+pip install -r requirements.txt
+copy .env.example .env        # (Linux/Mac: cp) e coloque sua chave no .env
+uvicorn main:app --reload
+```
+
+Abra **http://localhost:8000**. Abrir o `index.html` direto (file://) não funciona mais, porque o front agora conversa com o backend.
+
+A documentação automática da API fica em http://localhost:8000/docs.
+
+
